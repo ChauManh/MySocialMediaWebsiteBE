@@ -1,7 +1,6 @@
-import { Schema as _Schema, model } from 'mongoose';
-const Schema = _Schema;
+import mongoose from "mongoose";
 
-const User = new Schema(
+const User = new mongoose.Schema(
   {
     fullname: { type: String, required: true, unique: false },
     email: { type: String, required: true, unique: true },
@@ -9,14 +8,18 @@ const User = new Schema(
     profilePicture: { type: String },
     backgroundPicture: { type: String },
     about: { type: String },
-    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    friendRequests: {
+      sent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+      received: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    },
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     role: { type: String, enum: ["user", "admin"], default: "user" },
     createdAt: { type: Date, default: Date.now },
   },
   {
     timestamps: true,
-  },
+  }
 );
 
-export default model('User', User);
+export default mongoose.model("User", User);

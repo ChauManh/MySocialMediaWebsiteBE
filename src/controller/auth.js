@@ -24,7 +24,7 @@ class AuthController {
     try {
       const result = await signInService(email, password);
       return result.EC === 0
-        ? res.success(result.access_token, result.EM)
+        ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
       return res.InternalError(error.message);

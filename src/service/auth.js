@@ -32,7 +32,7 @@ const signUpService = async ({ fullname, email, password }) => {
 };
 
 const signInService = async (email, password) => {
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email });
   if (!user) {
     return {
       EC: 2,
@@ -50,6 +50,7 @@ const signInService = async (email, password) => {
 
   const payload = {
     email: user.email,
+    userId: user._id,
     role: user.role,
   };
 
@@ -59,7 +60,14 @@ const signInService = async (email, password) => {
   return {
     EC: 0,
     EM: "Logged in successfully",
-    access_token,
+    result: {
+      access_token,
+      user: {
+        fullname: user.fullname,
+        profilePicture: user.profilePicture,
+        userId: user._id
+      }
+    },
   };
 };
 

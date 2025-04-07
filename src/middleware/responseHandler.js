@@ -13,5 +13,12 @@ const responseHandler = (req, res, next) => {
   
     next();
   };
-  
-  export default responseHandler;
+
+  // const handleResponseResult = (result) => {
+  //   return result.EC === 0
+  //       ? res.success(result.result, result.EM)
+  //       : res.error(result.EC, result.EM);
+  // } 
+  export default responseHandler
+
+  // export { responseHandler, handleResponseResult };
