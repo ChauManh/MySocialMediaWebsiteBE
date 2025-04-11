@@ -13,7 +13,6 @@ const User = new mongoose.Schema(
       sent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
       received: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     },
-    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     role: { type: String, enum: ["user", "admin"], default: "user" },
     createdAt: { type: Date, default: Date.now },
   },

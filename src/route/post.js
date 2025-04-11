@@ -7,6 +7,6 @@ import PostController from "../controller/post.js";
 // /user
 router.post("/", verifyToken, PostController.createPost);
 router.get("/get-posts/:userId", verifyToken, PostController.getPosts);
-router.patch("/", verifyToken, PostController.createComment);
+router.patch("/comment", verifyToken, PostController.createComment);
 
 export default router;
