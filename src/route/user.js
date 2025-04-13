@@ -5,6 +5,7 @@ const router = Router();
 import UserController from "../controller/user.js";
 
 router.get("/", verifyToken, UserController.getOwnerUser); 
+router.get("/friends/:userId", verifyToken, UserController.getFriendList);
 router.get("/:userId", verifyToken, UserController.getUser); 
 router.patch("/", verifyToken, UserController.updateUser); 
 router.post("/friend-request/:userId", verifyToken, UserController.sendFriendRequest);

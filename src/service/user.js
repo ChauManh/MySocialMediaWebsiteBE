@@ -250,6 +250,25 @@ const cancelFriendService = async (userIdRequest, userIdTarget) => {
   };
 };
 
+const getFriendListService = async (userId) => {
+  const user = await User.findById(userId).populate(
+    "friends",
+    "userId fullname profilePicture friends"
+  );
+  if (user) {
+    return {
+      EC: 0,
+      EM: "Get friend list successfully",
+      result: user.friends,
+    };
+  } else {
+    return {
+      EC: 1,
+      EM: "User not found",
+    };
+  }
+};
+
 export {
   getUserService,
   updateUserService,
@@ -259,4 +278,5 @@ export {
   acceptFriendRequestService,
   denyFriendRequestService,
   cancelFriendService,
+  getFriendListService,
 };

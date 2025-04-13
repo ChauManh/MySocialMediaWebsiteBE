@@ -7,6 +7,7 @@ import {
   acceptFriendRequestService,
   denyFriendRequestService,
   cancelFriendService,
+  getFriendListService,
 } from "../service/user.js";
 
 class UserController {
@@ -37,7 +38,7 @@ class UserController {
 
   async updateUser(req, res) {
     const { userId } = req.user;
-    const dataUpdate = req.body;
+    const { dataUpdate } = req.body;
     try {
       const result = await updateUserService(userId, dataUpdate);
       return result.EC === 0
@@ -107,6 +108,18 @@ class UserController {
       const result = await cancelFriendService(userId, userIdTarget);
       return result.EC === 0
         ? res.success(null, result.EM)
+        : res.error(result.EC, result.EM);
+    } catch (error) {
+      return res.InternalError(error.message);
+    }
+  }
+
+  async getFriendList(req, res) {
+    const userId = req.params.userId;
+    try {
+      const result = await getFriendListService(userId);
+      return result.EC === 0
+        ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
       return res.InternalError(error.message);

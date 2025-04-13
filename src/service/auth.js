@@ -62,11 +62,6 @@ const signInService = async (email, password) => {
     EM: "Logged in successfully",
     result: {
       access_token,
-      user: {
-        fullname: user.fullname,
-        profilePicture: user.profilePicture,
-        userId: user._id
-      }
     },
   };
 };
