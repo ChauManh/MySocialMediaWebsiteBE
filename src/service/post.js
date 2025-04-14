@@ -9,7 +9,7 @@ const createPostService = async (userId, postData) => {
   const newPost = new Post({
     authorId: userId,
     content: postData.content,
-    image: postData.image,
+    images: postData.images,
   });
   const savedPost = await newPost.save();
   return {
@@ -22,11 +22,11 @@ const createPostService = async (userId, postData) => {
 const getPostsService = async (userIdResponse) => {
   const posts = await Post.find({ authorId: userIdResponse })
     .sort({ createdAt: -1 }) // Sắp xếp mới nhất trước
-    .populate("authorId", "fullname profilePicture")  
+    .populate("authorId", "fullname profilePicture")
     .populate("comments.userId", "fullname profilePicture");
   return {
     EC: 0,
-    EM: "Get posts successfully",
+    EM: posts.length > 0 ? "Get posts successfully" : "No posts found",
     result: posts,
   };
 };

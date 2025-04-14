@@ -1,33 +1,28 @@
 import User from "../model/user.js";
 import { hash, compare } from "bcrypt";
-import jwt from "jsonwebtoken";
-const { sign } = jwt;
-import { config } from "dotenv";
-config();
+import { generateAccessToken, generateRefreshToken } from "../util/jwtUtils.js";
+
 
 const signUpService = async ({ fullname, email, password }) => {
   const existingUser = await User.findOne({ email });
-
   if (existingUser) {
     if (existingUser.email === email) {
       return {
         EC: 1,
-        EM: "User already exists",
+        EM: "Người dùng đã tồn tại",
       };
     }
   }
-
   const hashedPassword = await hash(password, 10);
   const newUser = new User({
     fullname,
     email,
     password: hashedPassword,
   });
-
   await newUser.save();
   return {
     EC: 0,
-    EM: "User created successfully",
+    EM: "Đăng ký thành công",
   };
 };
 
@@ -39,7 +34,6 @@ const signInService = async (email, password) => {
       EM: "Email/Password không hợp lệ",
     };
   }
-
   const isMatch = await compare(password, user.password);
   if (!isMatch) {
     return {
@@ -47,23 +41,33 @@ const signInService = async (email, password) => {
       EM: "Password không hợp lệ",
     };
   }
-
-  const payload = {
-    email: user.email,
-    userId: user._id,
-    role: user.role,
-  };
-
-  const access_token = sign(payload, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
-  });
+  const access_token = generateAccessToken(user);
+  const refresh_token = generateRefreshToken(user);
   return {
     EC: 0,
-    EM: "Logged in successfully",
+    EM: "Đăng nhập thành công",
     result: {
       access_token,
+      refresh_token,
     },
   };
 };
 
-export { signUpService, signInService };
+const refreshTokenService = async (userPayload) => {
+  if (!userPayload) {
+    return {
+      EC: 1,
+      EM: "Không tồn tại userPayload",
+    };
+  }
+  const newAccessToken = generateAccessToken(userPayload);
+  return {
+    EC: 0,
+    EM: "Làm mới token thành công",
+    result: {
+      access_token: newAccessToken,
+    },
+  };
+};
+
+export { signUpService, signInService, refreshTokenService };
