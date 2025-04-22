@@ -19,7 +19,7 @@ class UserController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -32,7 +32,7 @@ class UserController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -45,7 +45,7 @@ class UserController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -58,7 +58,7 @@ class UserController {
         ? res.success(null, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -71,7 +71,7 @@ class UserController {
         ? res.success(null, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -84,7 +84,7 @@ class UserController {
         ? res.success(null, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -97,7 +97,7 @@ class UserController {
         ? res.success(null, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -110,7 +110,7 @@ class UserController {
         ? res.success(null, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -122,7 +122,7 @@ class UserController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -137,7 +137,7 @@ class UserController {
         ? res.success(result.result, "Cập nhật ảnh đại diện thành công")
         : res.error(result.EC, "Cập nhật ảnh đại diện không thành công");
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -152,7 +152,7 @@ class UserController {
         ? res.success(result.result, "Cập nhật ảnh bìa thành công")
         : res.error(result.EC, "Cập nhật ảnh bìa không thành công");
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -166,7 +166,7 @@ class UserController {
         ? res.success(result.result, "Xóa ảnh đại diện thành công")
         : res.error(result.EC, "Xóa ảnh đại diện không thành công");
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -180,7 +180,7 @@ class UserController {
         ? res.success(result.result, "Xóa ảnh bìa thành công")
         : res.error(result.EC, "Xóa ảnh bìa không thành công");
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 }

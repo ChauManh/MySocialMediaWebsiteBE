@@ -1,4 +1,8 @@
-import { signUpService, signInService, refreshTokenService } from "../service/auth.js";
+import {
+  signUpService,
+  signInService,
+  refreshTokenService,
+} from "../service/auth.js";
 
 class AuthController {
   async create(req, res) {
@@ -13,7 +17,7 @@ class AuthController {
         ? res.success(null, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -25,7 +29,7 @@ class AuthController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -37,7 +41,7 @@ class AuthController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 }

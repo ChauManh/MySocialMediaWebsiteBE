@@ -2,6 +2,9 @@ import {
   createPostService,
   getPostsService,
   createCommentService,
+  getPostsToDisplayService,
+  likePostService,
+  deletePostService,
 } from "../service/post.js";
 
 class PostController {
@@ -19,12 +22,11 @@ class PostController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
   async getPosts(req, res) {
-    // const { userId } = req.user;
     const userIdResponse = req.params.userId;
     try {
       const result = await getPostsService(userIdResponse);
@@ -32,7 +34,7 @@ class PostController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
     }
   }
 
@@ -45,7 +47,45 @@ class PostController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
-      return res.InternalError(error.message);
+      return res.InternalError();
+    }
+  }
+
+  async getPostsToDisplay(req, res) {
+    const { _id } = req.user;
+    try {
+      const result = await getPostsToDisplayService(_id);
+      return result.EC === 0
+        ? res.success(result.result, result.EM)
+        : res.error(result.EC, result.EM);
+    } catch (error) {
+      return res.InternalError();
+    }
+  }
+
+  async likePost(req, res) {
+    const { _id } = req.user;
+    const { postId } = req.params;
+    try {
+      const result = await likePostService(_id, postId);
+      return result.EC === 0
+        ? res.success(result.result, result.EM)
+        : res.error(result.EC, result.EM);
+    } catch (error) {
+      return res.InternalError();
+    }
+  }
+
+  async deletePost(req, res) {
+    const { _id } = req.user;
+    const { postId } = req.params;
+    try {
+      const result = await deletePostService(_id, postId);
+      return result.EC === 0
+        ? res.success(result.result, result.EM)
+        : res.error(result.EC, result.EM);
+    } catch (error) {
+      return res.InternalError();
     }
   }
 }

@@ -2,7 +2,6 @@ import User from "../model/user.js";
 import { hash, compare } from "bcrypt";
 import { generateAccessToken, generateRefreshToken } from "../util/jwtUtils.js";
 
-
 const signUpService = async ({ fullname, email, password }) => {
   const existingUser = await User.findOne({ email });
   if (existingUser) {
@@ -38,7 +37,7 @@ const signInService = async (email, password) => {
   if (!isMatch) {
     return {
       EC: 1,
-      EM: "Password không hợp lệ",
+      EM: "Email/Password không hợp lệ",
     };
   }
   const access_token = generateAccessToken(user);
