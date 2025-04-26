@@ -1,4 +1,6 @@
 import User from "../model/user.js";
+import { emitToUser } from "../socket/socketService.js";
+import { createNotificationService } from "./notification.js";
 
 const getOwnerUserService = async (userId) => {
   const user = await User.findById(userId).select("-password");
@@ -47,13 +49,8 @@ const updateUserService = async (userId, dataUpdate) => {
   if (updatedUser) {
     return {
       EC: 0,
-      EM: "Update user information successfully",
+      EM: "Cập nhật thông tin người dùng thành công",
       result: updatedUser,
-    };
-  } else {
-    return {
-      EC: 1,
-      EM: "User not found",
     };
   }
 };
@@ -76,30 +73,37 @@ const sendFriendRequestService = async (userIdRequest, userIdTarget) => {
   const isAlreadyFriend = sender.friends.includes(userIdTarget);
   const hasSentRequest = sender.friendRequests.sent.includes(userIdTarget);
   const hasReceivedReq = sender.friendRequests.received.includes(userIdTarget);
-
   if (isAlreadyFriend) {
     return {
       EC: 2,
       EM: "Đã là bạn bè",
     };
   }
-
   if (hasSentRequest) {
     return {
       EC: 2,
       EM: "Đã gửi lời mời kết bạn trước đó",
     };
   }
-
   if (hasReceivedReq) {
     return {
       EC: 2,
       EM: "Người này đã gửi lời mời kết bạn cho bạn. Hãy chấp nhận.",
     };
   }
-
   sender.friendRequests.sent.push(userIdTarget);
   receiver.friendRequests.received.push(userIdRequest);
+  await createNotificationService(
+    userIdRequest,
+    userIdTarget,
+    "friend_request",
+    `${sender.fullname} đã gửi lời mời kết bạn cho bạn.`
+  );
+  // Gửi thông báo qua WebSocket tới người nhận lời mời (receiver)
+  emitToUser(userIdTarget, "newFriendRequest", {
+    senderId: userIdRequest,
+    message: "Bạn có một lời mời kết bạn mới!",
+  });
   await sender.save();
   await receiver.save();
   return {
@@ -174,6 +178,11 @@ const acceptFriendRequestService = async (userIdRequest, userIdTarget) => {
   );
   await sender.save();
   await receiver.save();
+  emitToUser(userIdTarget, "friendRequestAccepted", {
+    senderId: userIdRequest,
+    senderName: sender.fullname,
+    message: `${sender.fullname} đã chấp nhận lời mời kết bạn của bạn!`,
+  });
   return {
     EC: 0,
     EM: "Đồng ý lời mời kết bạn thành công",

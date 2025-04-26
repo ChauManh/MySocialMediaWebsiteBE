@@ -8,7 +8,7 @@ const searchUsersService = async (userId, keyword) => {
   }).select("fullname profilePicture friends friendRequests");
   return {
     EC: 0,
-    EM: "Search user successfully",
+    EM: "Tìm kiếm người dùng thành công",
     result: users,
   };
 };
