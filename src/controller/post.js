@@ -5,6 +5,7 @@ import {
   getPostsToDisplayService,
   likePostService,
   deletePostService,
+  getDetailPostService,
 } from "../service/post.js";
 
 class PostController {
@@ -40,7 +41,8 @@ class PostController {
 
   async createComment(req, res) {
     const { _id } = req.user;
-    const { textComment, postId } = req.body;
+    const { textComment } = req.body;
+    const { postId } = req.params;
     try {
       const result = await createCommentService(_id, postId, textComment);
       return result.EC === 0
@@ -81,6 +83,18 @@ class PostController {
     const { postId } = req.params;
     try {
       const result = await deletePostService(_id, postId);
+      return result.EC === 0
+        ? res.success(result.result, result.EM)
+        : res.error(result.EC, result.EM);
+    } catch (error) {
+      return res.InternalError();
+    }
+  }
+
+  async getDetailPost(req, res) {
+    const { postId } = req.params;
+    try {
+      const result = await getDetailPostService(postId);
       return result.EC === 0
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);

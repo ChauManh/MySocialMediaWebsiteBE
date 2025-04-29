@@ -13,8 +13,9 @@ router.post(
 );
 router.patch("/:postId/like", verifyToken, PostController.likePost);
 router.get("/posts-display", verifyToken, PostController.getPostsToDisplay);
-router.patch("/comment", verifyToken, PostController.createComment);
-router.get("/:userId", verifyToken, PostController.getPosts);
+router.patch("/:postId/comment", verifyToken, PostController.createComment);
+router.get("/posts/:userId", verifyToken, PostController.getPosts);
+router.get("/:postId", PostController.getDetailPost)
 router.delete("/:postId", verifyToken, PostController.deletePost);
 
 export default router;

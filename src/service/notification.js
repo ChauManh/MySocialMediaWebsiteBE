@@ -1,11 +1,11 @@
 import Notification from "../model/notification.js";
-import mongoose from "mongoose";
 
 const createNotificationService = async (
   senderId,
   receiverId,
   type,
-  message
+  message,
+  postId = null,
 ) => {
   let notification = await Notification.findOne({ userId: receiverId });
   if (!notification) {
@@ -18,6 +18,7 @@ const createNotificationService = async (
     senderId,
     type,
     message,
+    postId,
   });
   await notification.save();
   return {

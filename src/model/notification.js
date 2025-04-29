@@ -16,6 +16,10 @@ const NotificationDetailSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  postId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+  },
   isRead: {
     type: Boolean,
     default: false,

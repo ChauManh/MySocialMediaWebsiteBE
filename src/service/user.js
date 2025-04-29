@@ -102,7 +102,7 @@ const sendFriendRequestService = async (userIdRequest, userIdTarget) => {
   // Gửi thông báo qua WebSocket tới người nhận lời mời (receiver)
   emitToUser(userIdTarget, "newFriendRequest", {
     senderId: userIdRequest,
-    message: "Bạn có một lời mời kết bạn mới!",
+    message: `${sender.fullname} đã gửi lời mời kết bạn cho bạn.`,
   });
   await sender.save();
   await receiver.save();
@@ -178,10 +178,16 @@ const acceptFriendRequestService = async (userIdRequest, userIdTarget) => {
   );
   await sender.save();
   await receiver.save();
+  await createNotificationService(
+    userIdRequest,
+    userIdTarget,
+    "accept_friend",
+    `${sender.fullname} đã chấp nhận lời mời kết bạn của bạn.`
+  );
   emitToUser(userIdTarget, "friendRequestAccepted", {
     senderId: userIdRequest,
     senderName: sender.fullname,
-    message: `${sender.fullname} đã chấp nhận lời mời kết bạn của bạn!`,
+    message: `${sender.fullname} đã chấp nhận lời mời kết bạn của bạn.`,
   });
   return {
     EC: 0,
