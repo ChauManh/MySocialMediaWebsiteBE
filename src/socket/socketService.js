@@ -6,8 +6,11 @@ const emitToUser = (userId, eventName, data) => {
   const socketId = global.connectedUsers[userId];
   if (socketId) {
     io.to(socketId).emit(eventName, data);
+  } else {
+    console.log(
+      `🔕 Không thể gửi '${eventName}' vì user ${userId} đang offline.`
+    );
   }
-  return;
 };
 
 export { emitToUser };
