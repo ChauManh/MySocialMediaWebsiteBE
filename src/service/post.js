@@ -50,7 +50,7 @@ const createCommentService = async (userId, postId, textComment) => {
   };
   post.comments.push(newComment);
   await post.save();
-  if (userId !== post.authorId._id) {
+  if (userId !== post.authorId._id.toString()) {
     await createNotificationService(
       userId,
       post.authorId._id,
@@ -99,7 +99,7 @@ const likePostService = async (userId, postId) => {
     post.likes = post.likes.filter((id) => id.toString() !== userId.toString());
   else {
     post.likes.push(userId);
-    if (userId !== post.authorId._id) {
+    if (userId !== post.authorId._id.toString()) {
       await createNotificationService(
         userId,
         post.authorId._id,
