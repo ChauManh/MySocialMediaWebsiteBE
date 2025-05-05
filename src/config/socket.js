@@ -6,7 +6,7 @@ global.connectedUsers = {}; // lưu userId => socketId
 const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173", // frontend của bạn
+      origin: "http://3.106.56.152", // frontend của bạn
       methods: ["GET", "POST"],
     },
   });
