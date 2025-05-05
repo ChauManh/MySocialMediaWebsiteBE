@@ -1,4 +1,6 @@
 import { Server } from "socket.io";
+import { config } from "dotenv";
+config();
 
 let io; // biến toàn cục để lưu server websocket
 global.connectedUsers = {}; // lưu userId => socketId
@@ -6,7 +8,7 @@ global.connectedUsers = {}; // lưu userId => socketId
 const initSocket = (server) => {
   io = new Server(server, {
     cors: {
-      origin: "http://3.106.56.152", // frontend của bạn
+      origin: process.env.FE_URL, // frontend của bạn
       methods: ["GET", "POST"],
     },
   });
