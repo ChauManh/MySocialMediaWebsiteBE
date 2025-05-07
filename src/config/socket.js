@@ -7,6 +7,7 @@ global.connectedUsers = {}; // lưu userId => socketId
 
 const initSocket = (server) => {
   io = new Server(server, {
+    path: "/api/socket.io",
     cors: {
       origin: process.env.FE_URL, // frontend của bạn
       methods: ["GET", "POST"],

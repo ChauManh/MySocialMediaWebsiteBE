@@ -20,14 +20,41 @@ const createConversationService = async (userId, memberIds) => {
 const getUserConversationsService = async (userId) => {
   const conversations = await Conversation.find({ members: userId })
     .sort({ updatedAt: -1 })
-    .populate("members", "fullname profilePicture")
-    .populate("lastSender", "fullname profilePicture");
+    .populate("lastMessage", "-conversationId")
+    .populate("members", "fullname profilePicture");
+
+  const filtered = conversations.map((conv) => {
+    const withUser = conv.members.find(
+      (m) => m._id.toString() !== userId.toString()
+    );
+
+    return {
+      ...conv.toObject(),
+      with: withUser || null,
+    };
+  });
 
   return {
     EC: 0,
     EM: "Lấy danh sách cuộc trò chuyện thành công",
-    result: conversations,
+    result: filtered,
   };
 };
 
-export { createConversationService, getUserConversationsService };
+const getConversationWithService = async (userId, withUserId) => {
+  const conversation = await Conversation.findOne({
+    isGroup: false,
+    members: { $all: [userId, withUserId], $size: 2 },
+  });
+  return {
+    EC: 0,
+    EM: "Lấy cuộc trò chuyện thành công",
+    result: conversation,
+  };
+};
+
+export {
+  createConversationService,
+  getUserConversationsService,
+  getConversationWithService,
+};

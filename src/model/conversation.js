@@ -6,11 +6,8 @@ const ConversationSchema = new mongoose.Schema(
       { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     ],
     lastMessage: {
-      type: String,
-    },
-    lastSender: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Message",
     },
     isGroup: { type: Boolean, default: false },
   },

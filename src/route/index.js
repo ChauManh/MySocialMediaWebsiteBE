@@ -7,13 +7,13 @@ import conversationRouter from "./conversation.js"
 import messageRouter from "./message.js"
 
 function router(app) {
-  app.use("/auth", authRouter);
-  app.use("/user", userRouter);
-  app.use("/post", postRouter);
-  app.use("/search", searchRouter);
-  app.use("/notification", notificationRouter);
-  app.use("/conversation", conversationRouter);
-  app.use("/message", messageRouter);
+  app.use("/api/auth", authRouter);
+  app.use("/api/user", userRouter);
+  app.use("/api/post", postRouter);
+  app.use("/api/search", searchRouter);
+  app.use("/api/notification", notificationRouter);
+  app.use("/api/conversation", conversationRouter);
+  app.use("/api/message", messageRouter);
 }
 
 export default router;

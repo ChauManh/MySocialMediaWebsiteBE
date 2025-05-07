@@ -19,7 +19,12 @@ const MessageSchema = new mongoose.Schema(
       default: "text",
     },
     fileUrl: { type: String },
-    isRead: { type: Boolean, default: false },
+    readBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   { timestamps: true }
 );

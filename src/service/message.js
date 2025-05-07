@@ -1,22 +1,32 @@
 import Message from "../model/message.js";
 import Conversation from "../model/conversation.js";
 import { emitToUser } from "../socket/socketService.js";
+import { createConversationService } from "./conversation.js";
 
-const sendMessageService = async (userId, conversationId, message) => {
-  const conversation = await Conversation.findById(conversationId);
-  if (!conversation) {
-    return { EC: 1, EM: "Cuộc trò chuyện không tồn tại" };
-  }
+const sendMessageService = async (
+  userId,
+  conversationId,
+  message,
+  receiveUserId
+) => {
+  let conversation;
+  if (!conversationId && receiveUserId) {
+    const res = await createConversationService(userId, [receiveUserId]);
+    if (res.EC === 0) {
+      conversation = res.result;
+    } else return res;
+  } else conversation = await Conversation.findById(conversationId);
 
   const newMessage = await Message.create({
-    conversationId,
+    conversationId: conversation._id,
     senderId: userId,
     message: message,
+    readBy: [userId],
   });
   await newMessage.populate("senderId", "fullname profilePicture");
 
   // Cập nhật cuộc trò chuyện
-  conversation.lastMessage = message;
+  conversation.lastMessage = newMessage._id;
   conversation.lastSender = userId;
   await conversation.save();
 
@@ -49,4 +59,20 @@ const getMessagesService = async (conversationId) => {
   };
 };
 
-export { sendMessageService, getMessagesService };
+const readMessageService = async (userId, conversationId) => {
+  await Message.updateMany(
+    {
+      conversationId,
+      readBy: { $ne: userId },
+    },
+    {
+      $addToSet: { readBy: userId },
+    }
+  );
+  return {
+    EC: 0,
+    EM: "Đã đánh dấu tin nhắn là đã đọc",
+  };
+};
+
+export { sendMessageService, getMessagesService, readMessageService };
