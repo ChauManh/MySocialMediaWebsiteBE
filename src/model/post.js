@@ -14,7 +14,12 @@ const PostSchema = new mongoose.Schema(
       required: true,
     },
     content: { type: String },
-    images: [{ type: String }],
+    media: [
+      {
+        url: { type: String, required: true },
+        type: { type: String, enum: ["image", "video"], required: true },
+      },
+    ],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments: [CommentSchema],
   },

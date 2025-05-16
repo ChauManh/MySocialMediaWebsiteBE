@@ -8,12 +8,14 @@ class MessageController {
   async sendMessage(req, res) {
     const { _id } = req.user;
     const { conversationId, message, receiveUserId } = req.body;
+    const file = req.file;
     try {
       const result = await sendMessageService(
         _id,
         conversationId,
         message,
-        receiveUserId
+        receiveUserId,
+        file
       );
       return result.EC === 0
         ? res.success(result.result, result.EM)

@@ -12,10 +12,17 @@ class PostController {
   async createPost(req, res) {
     const { _id } = req.user;
     const { content } = req.body;
-    const imageUrls = req.files?.map((file) => file.path);
+    const media =
+      req.files?.map((file) => {
+        const isVideo = file.mimetype.startsWith("video");
+        return {
+          url: file.path,
+          type: isVideo ? "video" : "image",
+        };
+      }) || [];
     const postData = {
       content,
-      images: imageUrls || [],
+      media,
     };
     try {
       const result = await createPostService(_id, postData);

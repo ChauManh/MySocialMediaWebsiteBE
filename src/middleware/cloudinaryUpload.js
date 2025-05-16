@@ -17,18 +17,23 @@ const storage = new CloudinaryStorage({
       folder = "posts"; // Thư mục dành cho ảnh bài viết
     }
 
+    const isVideo = file.mimetype.startsWith("video");
+
     return {
       folder: `social-media/${folder}`, // Thư mục trên Cloudinary
-      allowed_formats: ["jpg", "png", "jpeg", "webp"],
-      transformation: [
-        {
-          width: 500,
-          height: 500,
-          crop: "limit",
-          quality: "auto",
-          fetch_format: "auto",
-        },
-      ],
+      resource_type: isVideo ? "video" : "image",
+      allowed_formats: ["jpg", "png", "jpeg", "webp", "mp4", "mov"],
+      transformation: !isVideo
+        ? [
+            {
+              width: 500,
+              height: 500,
+              crop: "limit",
+              quality: "auto",
+              fetch_format: "auto",
+            },
+          ]
+        : undefined,
     };
   },
 });

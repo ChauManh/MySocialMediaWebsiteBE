@@ -7,7 +7,7 @@ const createPostService = async (userId, postData) => {
   const newPost = new Post({
     authorId: userId,
     content: postData.content,
-    images: postData.images,
+    media: postData.media,
   });
   const savedPost = await newPost.save();
   return {

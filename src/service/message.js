@@ -7,7 +7,8 @@ const sendMessageService = async (
   userId,
   conversationId,
   message,
-  receiveUserId
+  receiveUserId,
+  file
 ) => {
   let conversation;
   if (!conversationId && receiveUserId) {
@@ -20,8 +21,10 @@ const sendMessageService = async (
   const newMessage = await Message.create({
     conversationId: conversation._id,
     senderId: userId,
-    message: message,
+    message: message || "",
     readBy: [userId],
+    messageType: file ? "image" : "text",
+    fileUrl: file?.path || null,
   });
   await newMessage.populate("senderId", "fullname profilePicture");
 
