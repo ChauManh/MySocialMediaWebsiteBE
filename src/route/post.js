@@ -13,6 +13,8 @@ router.post(
 router.patch("/:postId/like", verifyToken, PostController.likePost);
 router.get("/posts-display", verifyToken, PostController.getPostsToDisplay);
 router.patch("/:postId/comment", verifyToken, PostController.createComment);
+router.patch("/:postId/save", verifyToken, PostController.savePost);
+router.get("/saved", verifyToken, PostController.getSavedPosts);
 router.get("/posts/:userId", verifyToken, PostController.getPosts);
 router.get("/:postId", PostController.getDetailPost);
 router.delete("/:postId", verifyToken, PostController.deletePost);

@@ -6,6 +6,8 @@ import {
   likePostService,
   deletePostService,
   getDetailPostService,
+  savePostService,
+  getSavedPosts,
 } from "../service/post.js";
 
 class PostController {
@@ -102,6 +104,31 @@ class PostController {
     const { postId } = req.params;
     try {
       const result = await getDetailPostService(postId);
+      return result.EC === 0
+        ? res.success(result.result, result.EM)
+        : res.error(result.EC, result.EM);
+    } catch (error) {
+      return res.InternalError();
+    }
+  }
+
+  async savePost(req, res) {
+    const { _id } = req.user;
+    const postId = req.params.postId;
+    try {
+      const result = await savePostService(_id, postId);
+      return result.EC === 0
+        ? res.success(result.result, result.EM)
+        : res.error(result.EC, result.EM);
+    } catch (error) {
+      return res.InternalError();
+    }
+  }
+
+  async getSavedPosts(req, res) {
+    const { _id } = req.user;
+    try {
+      const result = await getSavedPosts(_id);
       return result.EC === 0
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);

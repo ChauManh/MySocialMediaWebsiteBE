@@ -159,6 +159,58 @@ const getDetailPostService = async (postId) => {
   };
 };
 
+const savePostService = async (userId, postId) => {
+  const post = await Post.findById(postId);
+  if (!post) {
+    return {
+      EC: 1,
+      EM: "Bài viết không còn tồn tại",
+    };
+  }
+
+  const user = await User.findById(userId);
+  const savedPost = user.savedPosts.findIndex(
+    (saved) => saved.post.toString() === postId
+  );
+
+  if (savedPost !== -1) {
+    user.savedPosts.splice(savedPost, 1);
+    await user.save();
+    return {
+      EC: 0,
+      EM: "Đã bỏ lưu bài viết",
+    };
+  } else {
+    user.savedPosts.push({ post: postId, savedAt: new Date() });
+    await user.save();
+    return {
+      EC: 0,
+      EM: "Lưu bài viết thành công",
+    };
+  }
+};
+
+const getSavedPosts = async (userId) => {
+  const user = await User.findById(userId).populate({
+    path: "savedPosts.post",
+    select: "content media authorId",
+    populate: {
+      path: "authorId",
+      select: "fullname profilePicture",
+    },
+  });
+
+  const validSavedPosts = user.savedPosts
+    .filter((item) => item.post)
+    .sort((a, b) => new Date(b.savedAt) - new Date(a.savedAt));
+
+  return {
+    EC: 0,
+    EM: "Lấy bài viết đã lưu thành công",
+    result: validSavedPosts,
+  };
+};
+
 export {
   createPostService,
   getPostsService,
@@ -167,4 +219,6 @@ export {
   likePostService,
   deletePostService,
   getDetailPostService,
+  savePostService,
+  getSavedPosts,
 };
