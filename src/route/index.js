@@ -5,6 +5,7 @@ import searchRouter from "./search.js"
 import notificationRouter from "./notification.js";
 import conversationRouter from "./conversation.js"
 import messageRouter from "./message.js"
+import userHistoryRouter from "./userHistory.js"
 
 function router(app) {
   app.use("/api/auth", authRouter);
@@ -14,6 +15,7 @@ function router(app) {
   app.use("/api/notification", notificationRouter);
   app.use("/api/conversation", conversationRouter);
   app.use("/api/message", messageRouter);
+  app.use("/api/user-history", userHistoryRouter);
 }
 
 export default router;

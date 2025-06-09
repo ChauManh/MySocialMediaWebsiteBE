@@ -1,5 +1,6 @@
 import User from "../model/user.js";
-import Post from "../model/post.js";
+
+// const 
 
 const searchUsersService = async (userId, keyword) => {
   const users = await User.find({

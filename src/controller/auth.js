@@ -29,6 +29,7 @@ class AuthController {
         ? res.success(result.result, result.EM)
         : res.error(result.EC, result.EM);
     } catch (error) {
+      // console.error("Error during user sign-in:", error);
       return res.InternalError();
     }
   }

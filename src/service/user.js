@@ -273,13 +273,8 @@ const getFriendListService = async (userId) => {
   if (user) {
     return {
       EC: 0,
-      EM: "Get friend list successfully",
+      EM: "Lấy danh sách bạn bè thành công",
       result: user.friends,
-    };
-  } else {
-    return {
-      EC: 1,
-      EM: "User not found",
     };
   }
 };
