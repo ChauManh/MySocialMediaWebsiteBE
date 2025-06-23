@@ -3,8 +3,7 @@ pipeline {
 
   environment {
     IMAGE_NAME = "chaumanh/socialmediaservice"
-    CONTAINER_NAME = "socialmediaservice"
-    REGISTRY_CREDENTIALS = credentials('dockerhub-cred')
+    REGISTRY_CREDENTIALS = 'dockerhub-cred'
   }
 
   stages {
@@ -16,20 +15,12 @@ pipeline {
       }
     }
 
-    stage('Build Docker Image') {
-      steps {
-        script {
-          docker.build("${IMAGE_NAME}")
-        }
-      }
-    }
-
-    stage('Push to Docker Hub') {
+    stage('Build & Push Docker Image') {
       steps {
         script {
           docker.withRegistry('https://index.docker.io/v1/', REGISTRY_CREDENTIALS) {
             def image = docker.build("${IMAGE_NAME}")
-            image.push("latest")
+            image.push('latest')
           }
         }
       }
