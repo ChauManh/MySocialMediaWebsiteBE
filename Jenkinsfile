@@ -7,12 +7,13 @@ pipeline {
     REGISTRY_CREDENTIALS = credentials('dockerhub-cred')
   }
 
+  stages {
     stage('Checkout') {
-       steps {
-          git branch: 'main',
-          credentialsId: 'github-cred',
-          url: 'https://github.com/ChauManh/MySocialMediaWebsiteBE.git'
-       }
+      steps {
+        git branch: 'main',
+            credentialsId: 'github-cred',
+            url: 'https://github.com/ChauManh/MySocialMediaWebsiteBE.git'
+      }
     }
 
     stage('Build Docker Image') {
