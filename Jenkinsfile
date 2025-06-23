@@ -4,14 +4,15 @@ pipeline {
   environment {
     IMAGE_NAME = "chaumanh/socialmediaservice"
     CONTAINER_NAME = "socialmediaservice"
-    REGISTRY_CREDENTIALS = credentials('dockerhub-cred') // tạo trong Jenkins
+    REGISTRY_CREDENTIALS = credentials('dockerhub-cred')
   }
 
-  stages {
-    stage('Pull github project') {
-      steps {
-        git 'https://github.com/ChauManh/socialmediaserviceBE.git'
-      }
+    stage('Checkout') {
+       steps {
+          git branch: 'main',
+          credentialsId: 'github-cred',
+          url: 'https://github.com/ChauManh/MySocialMediaWebsiteBE.git'
+       }
     }
 
     stage('Build Docker Image') {
@@ -22,28 +23,18 @@ pipeline {
       }
     }
 
-    stage('Login Docker Hub') {
+    stage('Push to Docker Hub') {
       steps {
         script {
-          docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-cred') {
-            echo "Logged in Docker Hub"
-          }
-        }
-      }
-    }
-
-    stage('Push Docker Image') {
-      steps {
-        script {
-          docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-cred') {
+          docker.withRegistry('https://index.docker.io/v1/', REGISTRY_CREDENTIALS) {
             def image = docker.build("${IMAGE_NAME}")
-            image.push('latest')
+            image.push("latest")
           }
         }
       }
     }
 
-    stage('Deploy') {
+    stage('Deploy to EC2') {
       steps {
         sshagent(['ec2-deploy-key']) {
           sh '''
