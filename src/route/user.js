@@ -17,5 +17,6 @@ router.delete("/friend-request/:userId", verifyToken, UserController.backSentReq
 router.patch("/friend-request/accept/:userId", verifyToken, UserController.acceptFriendRequest); 
 router.patch("/friend-request/deny/:userId", verifyToken, UserController.denyFriendRequest); 
 router.delete("/friend/:userId", verifyToken, UserController.cancelFriend); 
+router.patch("/show-friends", verifyToken, UserController.toggleShowFriends);
 
 export default router;

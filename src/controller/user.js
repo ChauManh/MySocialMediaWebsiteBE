@@ -183,6 +183,20 @@ class UserController {
       return res.InternalError();
     }
   }
+
+  async toggleShowFriends(req, res) {
+    const { _id } = req.user;
+    try {
+      const result = await updateUserService(_id, {
+        isShowFriends: req.body.isShowFriends,
+      });
+      return result.EC === 0
+        ? res.success(result.result, "Cập nhật hiển thị bạn bè thành công")
+        : res.error(result.EC, "Cập nhật hiển thị bạn bè không thành công");
+    } catch (error) {
+      return res.InternalError();
+    }
+  }
 }
 
 export default new UserController();

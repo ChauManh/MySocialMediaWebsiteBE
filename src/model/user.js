@@ -7,6 +7,8 @@ const User = new mongoose.Schema(
     password: { type: String, required: true },
     profilePicture: { type: String },
     backgroundPicture: { type: String },
+    gender: { type: String, enum: ["Nam", "Nữ"]},
+    isShowFriends: { type: Boolean, default: true },
     about: { type: String },
     friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     friendRequests: {

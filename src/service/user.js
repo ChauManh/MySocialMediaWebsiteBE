@@ -266,17 +266,23 @@ const cancelFriendService = async (userIdRequest, userIdTarget) => {
 };
 
 const getFriendListService = async (userId) => {
-  const user = await User.findById(userId).populate(
-    "friends",
-    "userId fullname profilePicture friends"
-  );
-  if (user) {
+  const user = await User.findById(userId)
+    .populate("friends", "_id fullname profilePicture friends")
+    .select("isShowFriends friends"); // chọn cả isShowFriends
+
+  if (!user) {
     return {
-      EC: 0,
-      EM: "Lấy danh sách bạn bè thành công",
-      result: user.friends,
+      EC: 1,
+      EM: "Người dùng không tồn tại",
+      result: null,
     };
   }
+
+  return {
+    EC: 0,
+    EM: "Lấy danh sách bạn bè thành công",
+    result: user.isShowFriends ? user.friends : null,
+  };
 };
 
 export {
